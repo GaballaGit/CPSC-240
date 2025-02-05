@@ -151,13 +151,15 @@ triangle:
     mov             [prompt_angle + rax - 1], byte 0
 
     ; User enters angle
-    ;mov             rax, 1
-    ;push            qword 1
-    ;mov             rdi, angle
-    ;mov             rsi, rsp
-    ;call            scanf
-    ;movsd           xmm12, qword [rsp]
-    ;pop             rax
+    mov             rax, 1
+    push            qword 1
+    push            qword 1
+    mov             rdi, angle
+    mov             rsi, rsp
+    call            scanf
+    movsd           xmm12, qword [rsp]
+    pop             rax
+    pop             rax
 
     
 
