@@ -45,6 +45,9 @@ section .data
     sides           db "%lf %lf", 0
     angle           db "%lf", 0
     pi              dq 3.141592653589793
+    oneEighty       dq 180.0
+    cos_result      dq 0.0
+    two             dq 2.0
 
 
 
@@ -161,7 +164,15 @@ triangle:
     pop             rax
     pop             rax
 
+    ; Convert degeres to radians
+    mov             rax, 3
+    movsd           xmm0, qword [pi]
+    movsd           xmm1, qword [oneEighty]
+    divsd           xmm0, xmm1
+    mulsd           xmm12, xmm0
+
     
+
 
     ; Restore the general purpose registers
     popf          
