@@ -50,7 +50,6 @@ section .data
     two             dq 2.0
 
 
-
 section .bss
     name            resb 32
     title           resb 32
@@ -171,7 +170,16 @@ triangle:
     divsd           xmm0, xmm1
     mulsd           xmm12, xmm0
 
-    
+    ; Before we do law of cos, get cos of given radians
+    mov             rax, 1
+    mov             rdi, cos_result
+    movsd           xmm0, xmm12
+    call            cos
+    movsd           xmm12, xmm0
+
+    ; Law of cos to find side 3
+    ;mov             rax, 3
+
 
 
     ; Restore the general purpose registers
