@@ -42,6 +42,8 @@ section .data
     prompt_title    db "Please enter your title (Mr, Ms, Nurse, Engineer, etc): ", 0
     prompt_sides    db "Please enter the sides of your triangle separated by ws: ", 0
     prompt_angle    db "Please enter the size in degrees of the angle between those sides: ", 0
+    third_side      db "The length of the third side is %lf units.", 10, 0
+    goodbye         db "Please enjoy your triangles %s %s.", 10, 0
     sides           db "%lf %lf", 0
     angle           db "%lf", 0
     pi              dq 3.141592653589793
@@ -98,6 +100,12 @@ triangle:
     mov             rdx, [stdin]
     call            fgets
 
+    ;Remove newline
+    mov             rax, 0
+    mov             rdi,  name
+    call            strlen
+    mov             [name + rax - 1], byte 0
+
     ; Prompt user title
     mov             rax, 0
     mov             rdi, prompt_title
@@ -115,6 +123,12 @@ triangle:
     mov             rsi, 32
     mov             rdx, [stdin]
     call            fgets
+
+    ;Remove newline
+    mov             rax, 0
+    mov             rdi,  title
+    call            strlen
+    mov             [title + rax - 1], byte 0
 
     ; Prompt two sides
     mov             rax, 0
@@ -197,8 +211,31 @@ triangle:
     ; Subtract with 2 * a * b * cos(theta)
     subsd           xmm10, xmm12
 
-    ; Finish off with sqrt, I will store this in xmm0 to return the value back to geometry.c
-    sqrtsd          xmm0, xmm10
+    ; Finish off with sqrt
+    sqrtsd          xmm15, xmm10
+
+    ; Print third side
+    mov             rax, 1
+    mov             rdi, third_side
+    movsd           xmm0, xmm15
+    call            printf
+
+    ; Print goodbye
+    mov             rax, 0
+    mov             rdi, goodbye
+    mov             rsi, title
+    mov             rdx, name
+    call            printf
+
+    ; Remove newline
+    mov             rax, 0
+    mov             rdi, goodbye
+    call            strlen
+    mov             [goodbye + rax - 1], byte 0
+
+
+    ; Move third side to xmm0 for return value
+    movsd             xmm0, xmm15
 
     ; Restore the general purpose registers
     popf          
