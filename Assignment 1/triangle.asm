@@ -40,12 +40,20 @@ extern cos
 section .data
     prompt_name     db "Please enter your last name: ", 0
     prompt_title    db "Please enter your title (Mr, Ms, Nurse, Engineer, etc): ", 0
+    prompt_sides    db "Please enter the sides of your triangle separated by ws: ", 0
+    prompt_angle    db "Please enter the size in degrees of the angle between those sides: ", 0
+    sides           db "%lf %lf", 0
+    angle           db "%lf", 0
+    pi              dq 3.141592653589793
 
 
 
 section .bss
     name            resb 32
     title           resb 32
+    sideA           resq 1
+    sideB           resq 1
+    sideC           resq 1
 
 section .text
 triangle:
@@ -75,7 +83,7 @@ triangle:
     mov             rdi, prompt_name
     call            printf
 
-    ; Clear new line
+    ; Clear newline
     mov             rax, 0
     mov             rsi, prompt_name
     call            strlen
@@ -93,7 +101,7 @@ triangle:
     mov             rdi, prompt_title
     call            printf
 
-    ; Remove new line
+    ; Remove newline
     mov             rax, 0
     mov             rdi, prompt_title
     call            strlen
@@ -106,6 +114,52 @@ triangle:
     mov             rdx, [stdin]
     call            fgets
 
+    ; Prompt two sides
+    mov             rax, 0
+    mov             rdi, prompt_sides
+    call            printf
+
+    ; Remove newline
+    mov             rax, 0
+    mov             rdi, prompt_sides
+    call            strlen
+    mov             [prompt_sides + rax - 1], byte 0
+
+    ; Get both sides, utalizing scanf
+    mov             rax, 2
+    push            qword 1
+    push            qword 1
+    mov             rdi, sides
+    mov             rsi, rsp
+    mov             rdx, rsp
+    add             rdx, 8
+    call            scanf
+    movsd           xmm11, qword [rsp]
+    movsd           xmm10, qword [rsp + 8]
+    pop             rax
+    pop             rax
+
+    ; Prompt angle
+    mov             rax, 0
+    mov             rdi, prompt_angle
+    call            printf
+
+    ; Remove newline
+    mov             rax, 0
+    mov             rdi, prompt_angle
+    call            strlen
+    mov             [prompt_angle + rax - 1], byte 0
+
+    ; User enters angle
+    ;mov             rax, 1
+    ;push            qword 1
+    ;mov             rdi, angle
+    ;mov             rsi, rsp
+    ;call            scanf
+    ;movsd           xmm12, qword [rsp]
+    ;pop             rax
+
+    
 
     ; Restore the general purpose registers
     popf          
