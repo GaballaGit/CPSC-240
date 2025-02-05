@@ -178,9 +178,27 @@ triangle:
     movsd           xmm12, xmm0
 
     ; Law of cos to find side 3
-    ;mov             rax, 3
+    mov             rax, 3
 
+    ; The formula is sqrt(a^2 + b^2 - 2abcos(theta))
 
+    ; Calculate 2 * a * b * cos(theta)
+    mulsd           xmm12, xmm11
+    mulsd           xmm12, xmm10
+    mulsd           xmm12, [two]
+
+    ; Raise sides a and b to the second power
+    mulsd           xmm11, xmm11
+    mulsd           xmm10, xmm10
+
+    ; add a^2 and b^2
+    addsd           xmm10, xmm11
+
+    ; Subtract with 2 * a * b * cos(theta)
+    subsd           xmm10, xmm12
+
+    ; Finish off with sqrt, I will store this in xmm0 to return the value back to geometry.c
+    sqrtsd          xmm0, xmm10
 
     ; Restore the general purpose registers
     popf          

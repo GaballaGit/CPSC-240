@@ -30,10 +30,10 @@
 rm *.o
 rm *.out
 
-echo "Assemble the source file executive.asm"
+echo "Assemble the source file triangle.asm"
 nasm -f elf64 -o triangle.o triangle.asm
 
-echo "Compile the source file main.c"
+echo "Compile the source file geometry.c"
 gcc -c -m64 -Wall -fno-pie -no-pie -o -std=c2x -o geometry.o -c geometry.c
 
 echo "Link the object modules to create an executable file"

@@ -30,7 +30,7 @@
 
 #include <stdio.h>
 
-extern void triangle();
+extern double triangle();
 
 int main()
 {
@@ -38,10 +38,9 @@ int main()
 
     printf("If errors are discovered please report them to Mark Gaballa at mgaballa@csu.fullerton.edu for a quick fix. At Columbia Software the customer comes first.\n");
 
-    //double val = triangle();
-    triangle();
+    double val = triangle();
 
-    //printf("The main function received this number ", val, " and plans to keep it until needed.\n");
+    printf("The main function received this number: %f and plans to keep it until needed.\n", val);
 
     printf("An integer zero will be returned to the operating system. Bye.");
 
