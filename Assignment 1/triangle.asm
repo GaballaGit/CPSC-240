@@ -1,5 +1,5 @@
 ;****************************************************************************************************************************
-; Program name: "Assignment-1-Triangles". A short description of the purpose of the program
+; Program name: "Assignment-1-Triangles". This program is designed to calulate the third side of a triangle based on user input.
 ; Copyright (C) 2025 Mark Gaballa
 
 ; This file is part of the software program "Assignment-1-Triangles".
@@ -16,13 +16,34 @@
 
 ; You should have received a copy of the GNU General Public License
 ; along with this program.  If not, see <https://www.gnu.org/licenses/>. 
-
-; Author information
-;   Author name : Mark Gaballa
-;   Author email: mgaballa@csu.fullerton.edu
-;   Author section: 240-09
-;   Author CWID : 885762294
 ;****************************************************************************************************************************
+
+
+;----------------------------------------------------------------------------------------------------------------------------
+;Author information
+;  Author name : Mark Gaballa
+;  Author email: mgaballa@csu.fullerton.edu
+;  Author section: 240-09
+;  Author CWID : 885762294
+
+;  Class: 240-09 Section 09
+
+;Program information
+;  Program name: Triangles
+;  Programming languages: C, X86-64, bash
+;  Date program began: 2025-Feb-4
+;  Date of last update: 2025-Feb-7
+;  Files in this program: geometry.c, triangle.asm, r.sh.
+;
+;Purpose
+;  This program calulates the third side of a triangle given the user's inputs.
+;
+;This file:
+;  File name: triangle.asm
+;  Language: X86-64
+;  Assemble: nasm -f elf64 -o triangle.o triangle.asm
+;  Link: gcc -m64 -Wall -fno-pie -no-pie -z noexecstack -std=c2x -o triangle.out geometry.o triangle.o -lm
+;----------------------------------------------------------------------------------------------------------------------------
 
 ;Declarations
 global triangle
