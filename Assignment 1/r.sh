@@ -23,8 +23,6 @@
 #   Author email: mgaballa@csu.fullerton.edu
 #   Author section: 240-09
 #   Author CWID : 885762294
-
-# For research purpose only. Please don't copy word for word. Avoid academic dishonesty. 
 #****************************************************************************************************************************
 
 rm *.o
