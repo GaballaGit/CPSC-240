@@ -3,17 +3,24 @@
 ; Declarations
 global manager
 extern inputArray
+extern outputArray
 extern printf
 extern scanf
 extern strlen
 
 section     .data
-    greetings   db "This program will manage your arrays of 64-bit floats",10,"For the array enter a sequence of 64-bit floats separated by white space.", 10, "After the last input press enter followed by Control+D:", 10,0
-    received    db "These numbers were received and placed into an array", 10, "The variance of the inputted numbers is 0.000000", 10, 0
-    num         db "%ld", 0
+    greetings       db "This program will manage your arrays of 64-bit floats",10,"For the array enter a sequence of 64-bit floats separated by white space.", 10, "After the last input press enter followed by Control+D:", 10,0
+    receivedArray   db "These numbers were received and placed into an array", 10, 0
+    theSum          db "The sum of the inputted numbers is 0.000000", 10 ,0
+    theMean         db "The arithmetic mean of the numbers in the array is 0.000000", 10, 0
+    afterSort       db "This is the array after the sort process completed:", 10, 0
+    num             db "%ld", 0
+    stringformat    db "%s", 0
+    sizeofArray     db "The size of the array is %ld", 10, 0
+    
 
 section     .bss
-    prices      resq 20
+    prices          resq 20
 
 section     .text
 manager:
@@ -39,23 +46,46 @@ manager:
      pushf
 
     ; Set the array to register r8 (note that accessing an element is [r8 + 8*r12], where r12 is the index)
-    mov     r8, prices
-
+    mov     r10, prices
 
     ;Greet the user
     mov     rax, 0
     mov     rdi, greetings
     call    printf
 
-    ;Let user know that the array has been recieved, as well as the variance
-    mov     rax, 0
-    mov     rdi, received
-    call    printf
-
     ; Call input array
     mov      rax, 0
-    mov      rdi, r8
+    mov      rdi, r10   ; The array itself
+    mov      rsi, 20    ; Size of the Array
     call     inputArray
+    mov      r11, rax
+
+    ; Notifiy the user that the input was recieved
+    mov     rax, 0
+    mov     rdi, receivedArray
+    call    printf
+
+    ; Output unsorted array
+    mov     rax, 0
+    mov     rdi, r10
+    mov     rsi, r11
+    call    outputArray
+
+    ; Output the sum
+    ;mov     rax, 0
+    ;mov     rdi, theSum
+    ;call    printf
+
+    ; Output the mean
+    ;mov     rax, 0
+    ;mov     rdi, theMean
+    ;call    printf
+
+    ; Output the sorted array
+    ;mov     rax, 0
+    ;mov     rdi, afterSort
+    ;call    printf
+
 
     ; Restore the general purpose registers
     popf          
@@ -76,5 +106,5 @@ manager:
     ; Restore the base pointer
     pop     rbp
 
-    ; Return
+    ; Return the sum of the array
     ret

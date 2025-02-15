@@ -55,16 +55,22 @@ rm *.o
 rm *.out
 
 echo "Assemble the source file manager.asm"
-nasm -f elf64 -o manager.o manager.asm
+nasm -f elf64 -g -o manager.o manager.asm
 
 echo "Assemble the source file input_array.asm"
-nasm -f elf64 -o input_array.o input_array.asm
+nasm -f elf64 -g -o input_array.o input_array.asm
+
+echo "Assemble the source file isfloat.asm"
+nasm -f elf64 -g -l isfloat.lis -o isfloat.o isfloat.asm
+
+echo "Assemble the soruce file output_array.asm"
+nasm -f elf64 -g -o output_array.o output_array.asm
 
 echo "Compile the source file main.c"
 gcc -c -m64 -Wall -fno-pie -no-pie -o -std=c2x -o main.o -c main.c
 
 echo "Link the object modules to create an executable file"
-gcc -m64 -Wall -fno-pie -no-pie -z noexecstack -std=c2x -o manager.out main.o manager.o input_array.o -lm
+gcc -m64 -Wall -fno-pie -no-pie -z noexecstack -std=c2x -o manager.out main.o manager.o input_array.o isfloat.o output_array.o -lm
 
 echo "Execute the program"
 chmod +x manager.out

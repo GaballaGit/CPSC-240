@@ -1,12 +1,18 @@
 global inputArray
+extern isfloat
+extern atof
 extern printf
 extern scanf
 
 
 section .data
     testing     db "Testing input section!!!!!!!!!!!!!!!!", 0
-    floatform   db "%lf", 0
+    badFloat    db "This input is not a float!", 10, 0
+    stringform   db "%s", 0
+    counter     dq 0.0
+
 section .bss
+    inputString resb 50
 
 section .text
 inputArray:
@@ -16,7 +22,7 @@ inputArray:
      mov     rbp, rsp
 
     ; Save the gprs (general purpose registers)
-     push    rbx
+    push     rbx
      push    rcx
      push    rdx
      push    rsi
@@ -31,18 +37,11 @@ inputArray:
      push    r15
      pushf
 
-
-
-    
-    ;test
-    ;mov     rax, 0
-    ;mov     rdi, testing
-    ;call    printf
-
     ;Recieve the array
     mov     r14, rdi ;array itself
     mov     r15, rsi ;array size
-    xor     r13, r13 ;iterator
+    mov     r13, 0;iterator
+
     jmp topofloop
 
 topofloop:
@@ -51,17 +50,45 @@ topofloop:
 
 	;block prepare scans to input float
 	mov	    rax, 0
-	mov     rdi, floatform
-	lea	    rsi, [r14 + 8*r13]
+    push    qword 0
+    push    qword 0
+	mov     rdi, stringform
+    mov     rsi, inputString
 	call	scanf
+    pop     rax
+    pop     rax
 	cmp     eax, -1
-	je	    outofloop
+	je	    outofloop ; check for ctrl d
+
+    ; Validate the string
     mov     rax, 0
-    mov     rdi,
+    mov     rdi, inputString
+    call    isfloat
+    cmp     rax, 0
+    je      badinput
+
+    ; Convert string to float
+    mov     rax, 0
+    mov     rdi, inputString
+    call    atof
+    movsd   [r14 + r13*8], xmm0
+
+    ;increment one
 	inc	    r13
     jmp     topofloop
 
+badinput:
+
+    ; print bad input and return?
+    mov     rax, 0
+    mov     rdi, badFloat
+    call    printf
+    jmp     topofloop
+
 outofloop:
+
+    mov     rax, r13
+
     ; Restore the general purpose registers
     popf          
     pop     r15
@@ -81,7 +108,8 @@ outofloop:
     ; Restore the base pointer
     pop     rbp
 
-    mov     rax, r14
+    ; Return size of array
+    
     ret
 
  

@@ -10,7 +10,7 @@ section .data
 
     prompt_name     db "What is your name: ", 0
     prompt_number   db "Please enter a number: ", 0
-    num             db "%lf", 0
+    num             db "%lf %lf %lf", 0
 
 section .bss
 
@@ -68,7 +68,7 @@ getnum:
     mov     rdi, num
     mov     rsi, rsp
     call    scanf
-    movsd   xmm10, xmm0
+    movsd   xmm10, [rsp]
     pop     rax
     pop     rax
 
@@ -76,9 +76,12 @@ getnum:
 
     ;hmm?
     mov     rax, 1
-    movsd   xmm0, xmm10
     mov     rdi, num
+    movsd   xmm0, xmm10
     call    printf
+
+    ;hmm?
+    
 
 
     ; Restore the general purpose registers
