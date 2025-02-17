@@ -1,15 +1,16 @@
 global outputArray
-extern isfloat
-extern atof
+
 extern printf
-extern scanf
+
 
 
 section .data
-    floatform   db "%.9f", 0
+    floatform   db "%.9f ", 0
+    one         dq 1.0
 
 section .bss
     ; Unused
+    
 section .text
 outputArray:
 
@@ -34,28 +35,29 @@ outputArray:
      pushf
 
     ;Recieve the array
-    mov     r14, rdi ;array itself
-    mov     r15, rsi
+    mov     r15, rdi ;array itself
+    mov     r14, rsi
     mov     r13, 0 ;iterator
-    jmp topofloop
+
+    xorpd   xmm15, xmm15
+    ;addsd   xmm15, [one]
 
 topofloop:
-    cmp r13, r15
-	jge	outofloop 
-
-
-	; Output each float of the array
-    movsd   xmm15, [r14 + r13*8]
+    cmp     r13, r14
+	jge	    outofloop 
 
     mov     rax, 1
+    movsd   xmm0, [r15 + r13*8]
     mov     rdi, floatform
-    movsd   xmm0, xmm15
     call    printf
 
     inc     r13
+    addsd   xmm15, [one]
     jmp     topofloop
 
 outofloop:
+
+    movsd   xmm0, xmm15
     ; Restore the general purpose registers
     popf          
     pop     r15

@@ -66,11 +66,20 @@ nasm -f elf64 -g -l isfloat.lis -o isfloat.o isfloat.asm
 echo "Assemble the soruce file output_array.asm"
 nasm -f elf64 -g -o output_array.o output_array.asm
 
+echo "Assemble the soruce file sum.asm"
+nasm -f elf64 -g -o sum.o sum.asm
+
+echo "Assemble the soruce file swap.asm"
+nasm -f elf64 -g -o swap.o swap.asm
+
+echo "Compile the source file sort.c"
+gcc -c -m64 -Wall -fno-pie -no-pie -o -std=c2x -o sort.o -c sort.c
+
 echo "Compile the source file main.c"
 gcc -c -m64 -Wall -fno-pie -no-pie -o -std=c2x -o main.o -c main.c
 
 echo "Link the object modules to create an executable file"
-gcc -m64 -Wall -fno-pie -no-pie -z noexecstack -std=c2x -o manager.out main.o manager.o input_array.o isfloat.o output_array.o -lm
+gcc -m64 -Wall -fno-pie -no-pie -z noexecstack -std=c2x -o manager.out main.o manager.o input_array.o isfloat.o output_array.o sum.o swap.o sort.o -lm
 
 echo "Execute the program"
 chmod +x manager.out

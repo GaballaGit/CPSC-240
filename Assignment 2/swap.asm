@@ -29,15 +29,15 @@ swap:
      pushf
 
     ; Put values passed into less volitile registers
-    movsd   xmm10, xmm0
-    movsd   xmm11, xmm1
+    ;movsd   xmm10, xmm0
+    ;movsd   xmm11, xmm1
+    
+    ; Get values
+    mov     rax, [rdi]
+    mov     rcx, [rsi]
 
-    ; Swap the values in the registers
-    xorpd   xmm10, xmm11
-    xorpd   xmm11, xmm10
-    xorpd   xmm10, xmm11
-
-
+    mov     [rdi], rcx
+    mov     [rsi], rax
     ; Restore the general purpose registers
     popf          
     pop     r15

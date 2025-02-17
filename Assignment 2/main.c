@@ -1,16 +1,17 @@
+
 #include <stdio.h>
 
-extern void inputArray();
+extern double manager();
 
 
 int main()
 {
     printf("Welcome to Arrays of floating point numbers.\nBrought to you by Mark Gaballa\n");
 
-    inputArray();
-    long arr = 0.0000000;
+    double sum = manager();
 
-    printf("Main received %ld, and will keep it for future use.\nMain will return 0 to the operating system.   Bye.", arr);
+
+    printf("Main received %f, and will keep it for future use.\nMain will return 0 to the operating system.   Bye.\n", sum);
 
     return 0;
 }

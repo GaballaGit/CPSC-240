@@ -31,10 +31,10 @@ computeSum:
     ;Recieve the array
     mov     r14, rdi ;array itself
     mov     r15, rsi ;array size
-    xor     r13, r13 ;iterator
+    mov     r13, 0 ;iterator
 
     ;Sum register
-    mov     r8, 0
+    xorpd   xmm15, xmm15
     jmp topofloop
 
 ; Calculate the sum of the array
@@ -43,7 +43,7 @@ topofloop:
 	jge	outofloop 
 
     ;add
-	add	    r8, [r14 + 8*r13]
+	addsd	 xmm15, [r14 + 8*r13]
 	
     ;increment 1 up
     inc     r13
@@ -53,6 +53,7 @@ topofloop:
 ; Break the loop
 outofloop:
 
+    movsd     xmm0, xmm15
     ; Restore the general purpose registers
     popf          
     pop     r15
@@ -73,7 +74,6 @@ outofloop:
     pop     rbp
 
     ;Return the sum
-    mov     rax, r13
     ret
 
  
